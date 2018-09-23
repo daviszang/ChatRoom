@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatroomComponent implements OnInit {
   //server send all the users when log into the channel.
-  private users;
+  public users;
 
   constructor() { }
 

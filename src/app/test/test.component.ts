@@ -19,10 +19,11 @@ type validateResult = {
 })
 
 export class TestComponent implements OnInit {
-  private radio;
-  private labelPosition: string = "left";
-  private validateForm: FormGroup;
-  private options: any[] = [
+  public radio;
+  public labelPosition: string = "left";
+  public validateForm: FormGroup;
+  public discount;
+  public options: any[] = [
     {
       value: "mike",
       label: "加奶油",

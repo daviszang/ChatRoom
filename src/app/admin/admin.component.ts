@@ -20,31 +20,34 @@ type validateResult = {
   providers: [DbService]
 })
 export class AdminComponent implements OnInit {
-  private users;
-  private groups;
-  private type;
-  private dismissModel;
-  private cardToggle;
-  private types;
+  public users;
+  public groups;
+  public type;
+  public dismissModel;
+  public cardToggle;
+  public types;
 
-  private choosedAddUser;
+  public choosedAddUser;
 
-  private addGroupChannelButton;
-  private newChannelName;
-  private newGroupName;
+  public addGroupChannelButton;
+  public newChannelName;
+  public newGroupName;
 
-  private editGroupName;
-  private editChannelName;
+  public editGroupName;
+  public editChannelName;
 
-  private filteredUsers;
+  public filteredUsers;
 
-  private newUserName;
-  private newEmail;
-  private newUserType;
-  private newPassword;
-  private edittingUser;
+  public newUserName;
+  public newEmail;
+  public newUserType;
+  public newPassword;
+  public edittingUser;
 
-  private tableData: any[] = [];
+  public tableData: any[] = [];
+
+  public changeUserType;
+
 
   constructor(
     private dbService: DbService,
@@ -132,7 +135,6 @@ export class AdminComponent implements OnInit {
   editUserButton(user) {
     this.edittingUser = user;
   }
-  private changeUserType;
   editUser() {
     this.dbService
       .changeUserType(this.edittingUser.username, this.changeUserType)

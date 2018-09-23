@@ -8,9 +8,9 @@ import { DbService } from "../db/db.service";
   styleUrls: ['./choose-group-and-channel.component.css']
 })
 export class ChooseGroupAndChannelComponent implements OnInit {
-  private groups;
-  private channels;
-  private choosedGroup;
+  public groups;
+  public channels;
+  public choosedGroup;
 
   constructor(
     private activedRoute: ActivatedRoute,

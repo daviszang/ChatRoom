@@ -8,8 +8,8 @@ import { DbService } from "../db/db.service";
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  private username;
-  private password;
+  public username;
+  public password;
 
   constructor(
     private activedRoute: ActivatedRoute,
