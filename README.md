@@ -1,6 +1,22 @@
 # ChatRoom
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
+1. assign 1
+
+    Only contains the **front end** code of the chatroom.
+
+    All the features:
+
+        1. login,users is identified by their username.
+        2. group admin and super admin and general role.
+        3. chat room scheme.
+    
+    To do in assignment 2:
+
+        1. chat in the channel using socket.
+        2. nodejs server.
+        3. using mongodb to save the data. 
+
+<!-- This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
 
 ## Development server
 
@@ -24,4 +40,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md). -->
