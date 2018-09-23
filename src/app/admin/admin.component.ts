@@ -195,11 +195,11 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     let type = localStorage.getItem("type");
     if (type == undefined) {
-      location.replace("login");
+      location.replace("./login");
       return;
     }
     if (type == "0") {
-      location.replace("chooseGroupAndChannel");
+      location.replace("./chooseGroupAndChannel");
       return;
     }
     this.dismissModel = false;

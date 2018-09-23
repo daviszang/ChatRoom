@@ -24,9 +24,9 @@ export class LoginComponent implements OnInit {
         let user = result["user"];
         //general
         if (user.type === 0) {
-          location.replace("/chooseGroupAndChannel");
+          location.replace("./chooseGroupAndChannel");
         }else{
-          location.replace("/admin");
+          location.replace("./admin");
         }
         console.log("login success")
       } else {
@@ -41,9 +41,9 @@ export class LoginComponent implements OnInit {
     if(username != undefined){
       let type = localStorage.getItem("type");
       if (type == "0") {
-        location.replace("/chooseGroupAndChannel");
+        location.replace("./chooseGroupAndChannel");
       }else{
-        location.replace("/admin");
+        location.replace("./admin");
       }
     }
 
