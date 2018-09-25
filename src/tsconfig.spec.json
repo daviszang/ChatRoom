@@ -8,6 +8,8 @@
     ]
   },
   "files": [
+    // "test/**.spec.ts",
+    // "server/**.js"
     "test.ts",
     "polyfills.ts"
   ],

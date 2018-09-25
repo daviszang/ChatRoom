@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'ChatRoom';
   singout(){
-    localStorage.clear();
+    localStorage.removeItem("username");
+    localStorage.removeItem("type");
   }
 }
