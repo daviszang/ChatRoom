@@ -97,15 +97,25 @@ export class AdminComponent implements OnInit {
   }
 
   getUsers() {
-    return this.dbService.getUsers().then(users => {
+
+    // return this.dbService.getUsers().then(users => {
+    //   this.users = users;
+    // });
+
+    return this.dbService.getUsers().subscribe(users => {
       this.users = users;
-    });
+    },err => console.log(err));
+
   }
 
   getGroups() {
-    return this.dbService.getGroups().then(groups => {
+    // return this.dbService.getGroups().then(groups => {
+    //   this.groups = groups;
+    // });
+
+    return this.dbService.getGroups().subscribe(groups=>{
       this.groups = groups;
-    });
+    },err=>console.log(err))
   }
 
   deleteUser(user) {
@@ -123,7 +133,7 @@ export class AdminComponent implements OnInit {
     };
     // console.log("HHHHH1")
     // console.log(newUser);
-    this.dbService.addUser(newUser).then(data => {
+    this.dbService.addUser(newUser).subscribe(data => {
       this.getUsers();
       this.newUserName = "";
       this.newEmail = "";
@@ -138,7 +148,7 @@ export class AdminComponent implements OnInit {
   editUser() {
     this.dbService
       .changeUserType(this.edittingUser.username, this.changeUserType)
-      .then(data => {});
+      .subscribe(data => {});
     this.edittingUser = {};
     this.changeUserType = "";
   }

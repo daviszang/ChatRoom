@@ -39,7 +39,8 @@
     "@angular/cdk": "^6.0.0",
     "bcrypt": "^3.0.1",
     "socket.io": "^2.1.1",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "express-session":"^1.15.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",

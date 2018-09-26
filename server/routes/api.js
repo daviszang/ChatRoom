@@ -10,14 +10,12 @@ const Channel = require("../models/channel");
 
 var Book = require("../models/Book.js");
 
-
 /** GET API heath check */
 router.get("/health/get", (req, res, next) => {
   res.send("api works");
 });
 
-
-/* [TODO] GET ALL Users */
+/* GET ALL Users */
 router.get("/user", function(req, res, next) {
   // console.log("ddd");
   User.find(function(err, products) {
@@ -26,8 +24,25 @@ router.get("/user", function(req, res, next) {
   });
 });
 
-/** get user information*/
+/* GET ALL Groups */
+router.get("/group", function(req, res, next) {
+  // console.log("ddd");
+  Group.find(function(err, products) {
+    if (err) return next(err);
+    res.json(products);
+  });
+});
 
+/* GET ALL Channels */
+router.get("/channel", function(req, res, next) {
+  let groupId = req.query.groupId;
+  Channel.find({ group: groupId },function(err, products) {
+    if (err) return next(err);
+    res.json(products);
+  });
+});
+
+/** get user information*/
 router.get("/user/:userId", (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
@@ -104,9 +119,9 @@ router.post("/user", (req, res, next) => {
               email: req.body.email,
               username: req.body.username,
               // superAdmin: false,
-              type:req.body.type,
+              type: req.body.type,
               password: hash,
-              groups: [req.body.groupId],
+              groups: [],
               channels: []
             });
             user
@@ -116,14 +131,14 @@ router.post("/user", (req, res, next) => {
                   message: "User created",
                   userInfo: result
                 });
-                Group.update(
-                  { _id: req.body.groupId },
-                  { $push: { members: { _id: result._id } } }
-                )
-                  .exec()
-                  .then(result => {
-                    console.log("group update");
-                  });
+                // Group.update(
+                //   { _id: req.body.groupId },
+                //   { $push: { members: { _id: result._id } } }
+                // )
+                //   .exec()
+                //   .then(result => {
+                //     console.log("group update");
+                //   });
               })
               .catch(err => {
                 console.log(err);
@@ -137,6 +152,19 @@ router.post("/user", (req, res, next) => {
     });
 });
 
+/** change user type */
+router.post("/user/changetype", (req, res, next) => {
+  let type = req.body.type;
+  let username = req.body.username;
+  console.log("changetype");
+  console.log(req);
+  User.updateOne({ username: username }, { $set: { type: type } }, function(
+    err,
+    numberAffected
+  ) {
+    console.log(err);
+  });
+});
 
 /** User sign up, for super admin creation only, will be remove from UI */
 router.post("/signup", (req, res, next) => {
@@ -465,7 +493,7 @@ router.post("/channel/delete", (req, res, next) => {
 });
 
 /** create new channel*/
-router.post("/channel/create", (req, res, next) => {
+router.post("/channel", (req, res, next) => {
   const channel = new Channel({
     // _id: new mongoose.Types.ObjectId(),
     group: req.body.group,

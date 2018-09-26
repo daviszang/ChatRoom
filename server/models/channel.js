@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 var ChannelModelSchema = new Schema({
   // _id: mongoose.Schema.Types.ObjectId,
-  // group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
-  channelName: { type: String, required: true },
+  group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" },
+  name: { type: String, required: true },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   conversation: [
     {

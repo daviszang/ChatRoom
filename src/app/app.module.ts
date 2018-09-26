@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { Routes, RouterModule } from "@angular/router";
+import { HttpClientModule } from '@angular/common/http';
 
 import { ElModule } from "element-angular";
 
@@ -41,7 +42,8 @@ const routes: Routes = [
     HttpModule,
     BrowserAnimationsModule,
     ElModule.forRoot(),
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

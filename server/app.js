@@ -4,22 +4,34 @@ var path = require("path");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
 
+var mongoose = require("mongoose");
+mongoose
+  .connect(
+    "mongodb://localhost/mean-angular6",
+    { promiseLibrary: require("bluebird") }
+  )
+  .then(() => console.log("connection successful"))
+  .catch(err => console.error(err));
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/mean-angular6', { promiseLibrary: require('bluebird') })
-  .then(() =>  console.log('connection successful'))
-  .catch((err) => console.error(err));
-  
 var apiRouter = require("./routes/api");
 
 var app = express();
 
-app.use(logger("dev"));
+app.use(logger("short"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(express.static(path.join(__dirname, "dist/ChatRoom")));
-// app.use("/", express.static(path.join(__dirname, "dist/ChatRoom")));
+
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
+app.use(express.static(path.join(__dirname, "dist/ChatRoom")));
+app.use("/", express.static(path.join(__dirname, "dist/ChatRoom")));
 app.use("/api", apiRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
