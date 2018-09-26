@@ -11,6 +11,8 @@ export class ChooseGroupAndChannelComponent implements OnInit {
   public groups;
   public channels;
   public choosedGroup;
+  // public groupId;
+  // public channelId;
 
   constructor(
     private activedRoute: ActivatedRoute,
@@ -24,6 +26,11 @@ export class ChooseGroupAndChannelComponent implements OnInit {
       },
       err => console.log(err)
     );
+  }
+
+  chooseGroupAndChannel(groupId,channelId){
+    localStorage.setItem("groupId",groupId);
+    localStorage.setItem("channelId",channelId);
   }
 
   getChannels() {

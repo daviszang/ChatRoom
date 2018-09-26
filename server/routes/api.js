@@ -36,7 +36,7 @@ router.get("/group", function(req, res, next) {
 /* GET ALL Channels */
 router.get("/channel", function(req, res, next) {
   let groupId = req.query.groupId;
-  Channel.find({ group: groupId },function(err, products) {
+  Channel.find({ group: groupId }, function(err, products) {
     if (err) return next(err);
     res.json(products);
   });
@@ -216,6 +216,13 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
+router.get("/logout",(req,res,next)=>{
+  delete req.session.authenticated;
+  delete req.session.username;
+  delete req.session.userId;
+  delete req.session.type;
+}) 
+
 /** User login */
 router.post("/login", (req, res, next) => {
   User.find({ username: req.body.username })
@@ -235,22 +242,17 @@ router.post("/login", (req, res, next) => {
           });
         }
         if (result) {
-          /*const token = jwt.sign(
-                        {
-                            username: user[0].username,
-                            userId: user[0]._id
-                        },
-                        process.env.JWT_KEY,
-                        {
-                            expiresIn: "1h"
-                        }
-                    );*/
+          req.session.authenticated = true;
+          req.session.username = req.body.username;
+          req.session.userId = user[0]._id;
+          req.session.type = user[0].type;
           return res.status(200).json({
             message: "Auth successful",
             userInfo: {
               userId: user[0]._id,
               username: user[0].username,
-              superAdmin: user[0].superAdmin,
+              type:user[0].type,
+              // superAdmin: user[0].superAdmin,
               channels: user[0].channels,
               groups: user[0].groups
             }
@@ -461,7 +463,6 @@ router.post("/channel/add", (req, res, next) => {
 });
 
 /** Delete user from channel*/
-
 router.post("/channel/delete", (req, res, next) => {
   const channelId = req.body.channelId;
   const userId = req.body.userId;

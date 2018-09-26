@@ -10,7 +10,7 @@
         <tr class="clickable" aria-expanded="false">
           <td>{{ i + 1 }}</td>
           <td>{{ group.name }}</td>
-          <td><button class="btn btn-success" (click)="addChannelButton(group.name)" data-toggle="modal" data-target="#createChannelModel">Add
+          <td><button class="btn btn-success" (click)="addChannelButton(group._id)" data-toggle="modal" data-target="#createChannelModel">Add
               Channel</button></td>
           <td><button class="btn btn-success" data-toggle="collapse" [attr.data-target]="'#' + i" aria-expanded="false"
               aria-controls="collapse" (click)="editGroup(group)">Edit Group</button>

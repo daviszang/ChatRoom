@@ -49,8 +49,10 @@ export class ChatComponentComponent implements OnInit {
     console.log(message);
     this.socketService.send({
       content: message,
-      type:this.action.MESSAGE,
-      from:"tbxsx"
+      type: this.action.MESSAGE,
+      from: localStorage.getItem("username"),
+      group: localStorage.getItem("groupId"),
+      channel: localStorage.getItem("channelId")
     });
     this.messageContent = null;
   }
@@ -71,5 +73,4 @@ export class ChatComponentComponent implements OnInit {
     // }
     this.socketService.send(message);
   }
-  
 }

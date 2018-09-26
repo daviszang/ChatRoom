@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="media-body">
                                     <!-- <h4 class="media-heading" v-text="channel.name"></h4> -->
-                                    <a [href]="'./chatroom?group=' + choosedGroup + '&channel='+channel.name" type="button"
+                                    <a [href]="'./chatroom?group=' + choosedGroup + '&channel='+channel._id" (click)="chooseGroupAndChannel(groupId,channelId)" type="button"
                                         class="btn btn-lg btn-block btn-success media-heading">{{ channel.name }}</a>
                                 </div>
                             </div>

@@ -190,6 +190,33 @@ export class DbService {
     );
   }
 
+  /**
+   * log out
+   */
+  logout(): Observable<any> {
+    const url = `${apiUrl}/logout`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * log in
+   */
+
+  login(username, password): Observable<any> {
+    const url = `${apiUrl}/login`;
+    let data = {
+      username: username,
+      password: password
+    };
+    return this.http.post(url, data, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
+
   getUser(username, password) {
     return new Promise(resolve => {
       const index = this.users.findIndex(
@@ -208,7 +235,7 @@ export class DbService {
     });
   }
 
-  getGroups():Observable<any> {
+  getGroups(): Observable<any> {
     const url = `${apiUrl}/group`;
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
@@ -221,7 +248,7 @@ export class DbService {
     // });
   }
 
-  getChannels(groupId):Observable<any> {
+  getChannels(groupId): Observable<any> {
     const url = `${apiUrl}/channel?groupId=${groupId}`;
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
@@ -233,32 +260,40 @@ export class DbService {
     //   let data = this.groups[index].channels;
     //   resolve(data);
     // });
-
   }
 
   //[TODO]
-  addChannel(groupname, channelname) {
+  addChannel(groupId, channelname, userId) {
     const url = `${apiUrl}/channel`;
-    // let 
-    return new Promise(resolve => {
-      const index = this.groups.findIndex(group => group.name === groupname);
-      let newChannel = {
-        name: channelname,
-        users: []
-      };
-      this.groups[index].channels.push(newChannel);
-      resolve(this.groups);
-    });
-  }
-
-  addUser(data): Observable<any>  {
-    console.log("addUser");
-    console.log(data);
-    const url = `${apiUrl}/user`;
-    return this.http.post(url,data,httpOptions).pipe(
+    let data = {
+      group: groupId,
+      channelName: channelname,
+      userId: userId
+    };
+    return this.http.post(url, data, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError)
-    )
+    );
+    // let
+    // return new Promise(resolve => {
+    //   const index = this.groups.findIndex(group => group.name === groupname);
+    //   let newChannel = {
+    //     name: channelname,
+    //     users: []
+    //   };
+    //   this.groups[index].channels.push(newChannel);
+    //   resolve(this.groups);
+    // });
+  }
+
+  addUser(data): Observable<any> {
+    // console.log("addUser");
+    // console.log(data);
+    const url = `${apiUrl}/user`;
+    return this.http.post(url, data, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
 
     // return new Promise(resolve => {
     //   const index = this.users.findIndex(
@@ -269,20 +304,19 @@ export class DbService {
     //   }
     //   resolve(data);
     // });
-
   }
 
-  changeUserType(username, type):Observable<any> {
+  changeUserType(username, type): Observable<any> {
     const url = `${apiUrl}/user/changetype`;
     let data = {
-      username:username,
-      type:type
-    }
+      username: username,
+      type: type
+    };
     console.log(data);
-    return this.http.post(url,data,httpOptions).pipe(
+    return this.http.post(url, data, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError)
-    )
+    );
 
     // const index = this.users.findIndex(user => user.username == username);
     // this.users[index].type = type;
@@ -292,13 +326,19 @@ export class DbService {
   }
 
   addGroup(data) {
-    return new Promise(resolve => {
-      const index = this.groups.findIndex(group => group.name === data.name);
-      if (index == -1) {
-        this.groups.push(data);
-      }
-      resolve(data);
-    });
+    const url = `${apiUrl}/groups`;
+    return this.http.post(url, data, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+
+    // return new Promise(resolve => {
+    //   const index = this.groups.findIndex(group => group.name === data.name);
+    //   if (index == -1) {
+    //     this.groups.push(data);
+    //   }
+    //   resolve(data);
+    // });
   }
 
   findUsersbyGroupAndChannel(groupname, channelname): Promise<any[]> {

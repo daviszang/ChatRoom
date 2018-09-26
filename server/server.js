@@ -93,7 +93,7 @@ function onListening() {
 //socket
 io.on("connection", function(socket) {
   console.log("Connected client on port %s.", "3000");
-
+  socket.emit("message","log in")
   //client event hi
   socket.on("message", function(data) {
     console.log("[From client:] #");

@@ -11,7 +11,6 @@ import { ElModule } from "element-angular";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AdminComponent } from "./admin/admin.component";
-import { ChatroomComponent } from "./chatroom/chatroom.component";
 import { ChooseGroupAndChannelComponent } from "./choose-group-and-channel/choose-group-and-channel.component";
 import { TestComponent } from "./test/test.component";
 import { ChatComponentComponent } from './chat/chat-component/chat-component.component';
@@ -19,7 +18,7 @@ import { ChatComponentComponent } from './chat/chat-component/chat-component.com
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "admin", component: AdminComponent },
-  { path: "chatroom", component: ChatroomComponent},
+  { path: "chatroom", component: ChatComponentComponent},
   { path: "chooseGroupAndChannel", component: ChooseGroupAndChannelComponent },
   { path: "chattest", component: ChatComponentComponent },
   { path: "**", redirectTo: "login" }
@@ -30,7 +29,6 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     AdminComponent,
-    ChatroomComponent,
     ChooseGroupAndChannelComponent,
     TestComponent,
     ChatComponentComponent

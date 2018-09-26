@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
+var session = require('express-session');
 
 var mongoose = require("mongoose");
 mongoose
@@ -16,6 +17,17 @@ mongoose
 var apiRouter = require("./routes/api");
 
 var app = express();
+
+// initialize express-session to allow us track the logged-in user across sessions.
+app.use(session({
+  key: 'user_sid',
+  secret: 'somerandonstuffs',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      expires: 600000
+  }
+}));
 
 app.use(logger("short"));
 app.use(express.json());

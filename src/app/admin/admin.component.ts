@@ -48,7 +48,6 @@ export class AdminComponent implements OnInit {
 
   public changeUserType;
 
-
   constructor(
     private dbService: DbService,
     @Inject(forwardRef(() => FormBuilder)) private formBuilder: FormBuilder
@@ -97,15 +96,16 @@ export class AdminComponent implements OnInit {
   }
 
   getUsers() {
-
     // return this.dbService.getUsers().then(users => {
     //   this.users = users;
     // });
 
-    return this.dbService.getUsers().subscribe(users => {
-      this.users = users;
-    },err => console.log(err));
-
+    return this.dbService.getUsers().subscribe(
+      users => {
+        this.users = users;
+      },
+      err => console.log(err)
+    );
   }
 
   getGroups() {
@@ -113,9 +113,12 @@ export class AdminComponent implements OnInit {
     //   this.groups = groups;
     // });
 
-    return this.dbService.getGroups().subscribe(groups=>{
-      this.groups = groups;
-    },err=>console.log(err))
+    return this.dbService.getGroups().subscribe(
+      groups => {
+        this.groups = groups;
+      },
+      err => console.log(err)
+    );
   }
 
   deleteUser(user) {
@@ -128,11 +131,12 @@ export class AdminComponent implements OnInit {
     let newUser = {
       username: this.newUserName,
       email: this.newEmail,
-      type: this.newUserType,
+      type: this.newUserType || 0,
       password: this.newPassword
     };
-    // console.log("HHHHH1")
-    // console.log(newUser);
+    if (newUser.type == undefined) newUser.type = 0;
+    console.log("HHHHH1");
+    console.log(newUser);
     this.dbService.addUser(newUser).subscribe(data => {
       this.getUsers();
       this.newUserName = "";
@@ -148,7 +152,7 @@ export class AdminComponent implements OnInit {
   editUser() {
     this.dbService
       .changeUserType(this.edittingUser.username, this.changeUserType)
-      .subscribe(data => {});
+      .subscribe(data => this.getUsers(), err => console.log(err));
     this.edittingUser = {};
     this.changeUserType = "";
   }
@@ -164,10 +168,14 @@ export class AdminComponent implements OnInit {
   createGroup() {
     let newGroup = {
       name: this.newGroupName,
-      channels: []
+      members: [],
+      admin: localStorage.getItem("userId")
     };
     this.dismissModel = true;
-    return this.dbService.addGroup(newGroup).then(data => this.getGroups());
+    // return this.dbService.addGroup(newGroup).then(data => this.getGroups());
+    return this.dbService
+      .addGroup(newGroup)
+      .subscribe(data => this.getGroups(), err => console.log(err));
   }
 
   deleteGroup(groupname) {
@@ -177,14 +185,19 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  addChannelButton(groupname) {
-    this.addGroupChannelButton = groupname;
+  addChannelButton(groupId) {
+    this.addGroupChannelButton = groupId;
   }
   addChannel() {
     let tmp = this.addGroupChannelButton;
-    return this.dbService.addChannel(tmp, this.newChannelName).then(data => {
-      return this.getGroups();
-    });
+    // return this.dbService.addChannel(tmp, this.newChannelName).then(data => {
+    //   return this.getGroups();
+    // });
+
+    let userId = localStorage.getItem("userId");
+    return this.dbService
+      .addChannel(tmp, this.newChannelName, userId)
+      .subscribe(data => this.getGroups(), err => console.log(err));
   }
 
   addUserChannel() {
@@ -213,6 +226,7 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.dismissModel = false;
+    this.newUserType = 0;
     this.type = type;
     this.getUsers();
     this.getGroups();
