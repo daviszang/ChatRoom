@@ -68,17 +68,18 @@ router.get("/user/:userId", (req, res, next) => {
 });
 
 /** delete user */
-router.delete("/user/:userId", (req, res, next) => {
+router.get("/user/delete/:userId", (req, res, next) => {
+  console.log("delete user")
   User.findById(req.params.userId, function(err, user) {
     return user.remove(function(err) {
       if (!err) {
-        Group.update(
-          { _id: { $in: user.groups } },
-          { $pull: { members: user._id } },
-          function(err, numberAffected) {
-            console.log(numberAffected);
-          }
-        );
+        // Group.update(
+        //   { _id: { $in: user.groups } },
+        //   { $pull: { members: user._id } },
+        //   function(err, numberAffected) {
+        //     console.log(numberAffected);
+        //   }
+        // );
         Channel.update(
           { _id: { $in: user.channels } },
           { $pull: { members: user._id } },
@@ -283,11 +284,11 @@ router.post("/groups", (req, res, next) => {
       } else {
         const group = new Group({
           // _id: new mongoose.Types.ObjectId(),
-          groupName: req.body.name,
+          name: req.body.name,
           admin: req.body.userId,
           members: [req.body.userId]
         });
-
+        console.log(group);
         group
           .save()
           .then(result => {
@@ -403,9 +404,8 @@ router.post("/groups/update", (req, res, next) => {
 });
 
 /** delete group by id */
-router.delete("/groups/delete/:groupId", (req, res, next) => {
+router.get("/groups/delete/:groupId", (req, res, next) => {
   const id = req.params.groupId;
-
   Group.findById(id, function(err, group) {
     return group.remove(function(err) {
       if (!err) {
@@ -493,12 +493,13 @@ router.post("/channel/delete", (req, res, next) => {
     });
 });
 
+//[TODO] bug:
 /** create new channel*/
 router.post("/channel", (req, res, next) => {
   const channel = new Channel({
     // _id: new mongoose.Types.ObjectId(),
     group: req.body.group,
-    channelName: req.body.channelName,
+    name: req.body.channelName,
     members: [req.body.userId],
     conversation: []
   });
@@ -527,6 +528,8 @@ router.post("/channel", (req, res, next) => {
             error: err
           });
         });
+        
+      
     })
     .catch(err => {
       console.log(err);

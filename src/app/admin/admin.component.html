@@ -20,20 +20,19 @@
       </tbody>
     </table>
     <div>
-      <table class="table table-responsive table-hover">
+      <!-- <table class="table table-responsive table-hover">
         <tbody attr.id={{i}} class="collapse">
-          <tr *ngFor="let channel of group.channels;let cindex = index">
+          <tr *ngFor="let channel of getChannels(group._id);let cindex = index">
             <td>{{ cindex }} </td>
             <td>{{channel.name}}</td>
             <td>
               <button class="btn btn-success" (click)="editChannelButton(group.name,channel.name)" data-toggle="modal"
                 data-target="#editChannelModel">Edit Channel</button>
-              <!-- <el-button (click)="cardToggle = true">Edit Channel</el-button> -->
             </td>
             <td><button (click)="deleteChannel(group.name,channel.name)" class="btn btn-danger">Delete Channel</button></td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </div>
   </div>
   <div>
@@ -60,7 +59,7 @@
           <td>{{ types[user.type].label }}</td>
           <td>{{ user.email }}</td>
           <td><button (click)="editUserButton(user)" data-toggle="modal" data-target="#editUserModel" class="btn btn-secondary">Edit User</button></td>
-          <td><button (click)="deleteUser(user.username)" class="btn btn-danger">Delete User</button></td>
+          <td><button (click)="deleteUser(user._id)" class="btn btn-danger">Delete User</button></td>
         </tr>
       </tbody>
     </table>

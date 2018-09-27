@@ -31,6 +31,7 @@ export class ChooseGroupAndChannelComponent implements OnInit {
   chooseGroupAndChannel(groupId,channelId){
     localStorage.setItem("groupId",groupId);
     localStorage.setItem("channelId",channelId);
+    location.replace(`./chatroom?group=${groupId}&channel=${channelId}`);
   }
 
   getChannels() {

@@ -14,8 +14,11 @@ const SERVER_URL = "http://localhost:3000";
 export class ChatSocketService {
   private socket;
 
-  public initSocket(): void {
-    this.socket = socketIo(SERVER_URL);
+  public initSocket(channel): void {
+    let url = `${SERVER_URL}/?token=${channel}`;
+    console.log("Channel:");
+    console.log(url);
+    this.socket = socketIo(url);
   }
 
   public send(message: ChatMessage): void {

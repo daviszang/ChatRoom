@@ -18,17 +18,26 @@ export class ChatComponentComponent implements OnInit {
 
   constructor(private socketService: ChatSocketService) {}
 
+  // public channelPath;
+
   ngOnInit(): void {
     console.log("initing");
-    this.initIoConnection();
+    let groupId = localStorage.getItem("groupId");
+    let channelId = localStorage.getItem("channelId");
+    if (groupId == undefined || channelId == undefined) {
+      location.replace("/chooseGroupAndChannel");
+      return;
+    }
+    let channelPath = groupId + channelId;
+    this.initIoConnection(channelPath);
   }
 
-  private initIoConnection(): void {
-    this.socketService.initSocket();
-
+  private initIoConnection(channelPath): void {
+    this.socketService.initSocket(channelPath);
     this.ioConnection = this.socketService
       .onMessage()
       .subscribe((message: ChatMessage) => {
+        console.log(message);
         this.messages.push(message);
       });
 
@@ -49,7 +58,9 @@ export class ChatComponentComponent implements OnInit {
     console.log(message);
     this.socketService.send({
       content: message,
+      fromId:localStorage.getItem("userId"),
       type: this.action.MESSAGE,
+      // time:Date.now(),
       from: localStorage.getItem("username"),
       group: localStorage.getItem("groupId"),
       channel: localStorage.getItem("channelId")

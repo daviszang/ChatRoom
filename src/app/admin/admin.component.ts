@@ -7,6 +7,7 @@ import {
   Validators,
   AbstractControl
 } from "@angular/forms";
+import { group } from "@angular/animations";
 
 type validateResult = {
   status: string;
@@ -121,10 +122,18 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  deleteUser(user) {
-    return this.dbService.deleteUser(user).then(() => {
-      return this.getUsers();
-    });
+  deleteUser(userId) {
+
+    // return this.dbService.deleteUser(user).then(() => {
+    //   return this.getUsers();
+    // });
+
+    return this.dbService.deleteUser(userId).subscribe(
+      data => this.getUsers(),
+      err => console.log(err)
+    )
+
+
   }
 
   createUser() {
@@ -157,8 +166,6 @@ export class AdminComponent implements OnInit {
     this.changeUserType = "";
   }
 
-  editGroup() {}
-
   deleteChannel(groupname, channelname) {
     return this.dbService.deleteChannel(groupname, channelname).then(() => {
       this.getGroups();
@@ -169,20 +176,29 @@ export class AdminComponent implements OnInit {
     let newGroup = {
       name: this.newGroupName,
       members: [],
-      admin: localStorage.getItem("userId")
+      // admin: localStorage.getItem("userId"),
+      userId: localStorage.getItem("userId")
     };
     this.dismissModel = true;
+    console.log(newGroup);
     // return this.dbService.addGroup(newGroup).then(data => this.getGroups());
     return this.dbService
       .addGroup(newGroup)
       .subscribe(data => this.getGroups(), err => console.log(err));
   }
 
-  deleteGroup(groupname) {
-    console.log(groupname);
-    return this.dbService.deleteGroup(groupname).then(data => {
-      return this.getGroups();
-    });
+  deleteGroup(groupId) {
+    console.log(groupId);
+
+    // return this.dbService.deleteGroup(groupname).then(data => {
+    //   return this.getGroups();
+    // });
+
+    return this.dbService.deleteGroup(groupId).subscribe(
+      data => this.getGroups(),
+      err => console.log(err)
+    )
+
   }
 
   addChannelButton(groupId) {
@@ -198,6 +214,12 @@ export class AdminComponent implements OnInit {
     return this.dbService
       .addChannel(tmp, this.newChannelName, userId)
       .subscribe(data => this.getGroups(), err => console.log(err));
+  }
+
+  getChannels(groupId) {
+    return this.dbService
+      .getChannels(groupId)
+      .subscribe(data => {}, err => console.log(err));
   }
 
   addUserChannel() {

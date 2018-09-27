@@ -262,7 +262,6 @@ export class DbService {
     // });
   }
 
-  //[TODO]
   addChannel(groupId, channelname, userId) {
     const url = `${apiUrl}/channel`;
     let data = {
@@ -406,22 +405,34 @@ export class DbService {
     });
   }
 
-  deleteUser(username) {
-    return new Promise(resolve => {
-      const index = this.users.findIndex(user => user.username === username);
-      this.users.splice(index, 1);
-      resolve(true);
-    });
+  deleteUser(userId): Observable<any> {
+    const url = `${apiUrl}/user/delete/${userId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+
+    // return new Promise(resolve => {
+    //   const index = this.users.findIndex(user => user.username === username);
+    //   this.users.splice(index, 1);
+    //   resolve(true);
+    // });
   }
 
-  deleteGroup(groupname) {
-    return new Promise(resolve => {
-      const index = this.groups.findIndex(group => group.name === groupname);
-      if (index != -1) {
-        this.groups.splice(index, 1);
-      }
-      resolve(true);
-    });
+  deleteGroup(groupId): Observable<any> {
+    const url = `${apiUrl}/groups/delete/${groupId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+
+    // return new Promise(resolve => {
+    //   const index = this.groups.findIndex(group => group.name === groupname);
+    //   if (index != -1) {
+    //     this.groups.splice(index, 1);
+    //   }
+    //   resolve(true);
+    // });
   }
 
   deleteChannel(groupname, channelname) {

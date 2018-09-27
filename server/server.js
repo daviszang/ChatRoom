@@ -7,6 +7,8 @@
 var app = require("./app");
 var debug = require("debug")("mean-angular6:server");
 var http = require("http");
+const Channel = require("./models/channel");
+const User = require("./models/user");
 
 /**
  * Get port from environment and store in Express.
@@ -93,13 +95,57 @@ function onListening() {
 //socket
 io.on("connection", function(socket) {
   console.log("Connected client on port %s.", "3000");
-  socket.emit("message","log in")
+  socket.emit("message", "log in");
   //client event hi
+  let token = socket.handshake.query.token;
+  let groupId = token.substr(0, 24);
+  let channelId = token.substr(24, 48);
+  console.log(channelId);
+  Channel.findById(channelId,function(err, data) {
+    if (err) console.log(err);
+    else {
+      console.log("History:");
+      // console.log(data);
+      // console.log(data);
+      for (let msg of data.conversation) {
+        User.findById(msg.author, (err, user) => {
+          let tosendmsg = {
+            content: msg.content,
+            fromId: msg.author,
+            type: 2,
+            time:msg.time,
+            from: user.username,
+            group: groupId,
+            channel: channelId
+          };
+          // console.log(msg);
+          // console.log(tosendmsg);
+          socket.emit("message", tosendmsg);
+        });
+      }
+    }
+  });
   socket.on("message", function(data) {
+    Channel.updateOne(
+      { _id: channelId },
+      {
+        $push: {
+          conversation: {
+            author: data.fromId,
+            content: data.content
+          }
+        }
+      },
+      function(err, numAffected) {
+        if (err) console.log(err);
+        console.log(numAffected);
+      }
+    );
+    socket.join(token);
     console.log("[From client:] #");
     console.log(data);
     socket.emit("message", data);
-    socket.broadcast.emit('message',data);
+    socket.broadcast.to(token).emit("message", data);
   });
 
   //断开事件

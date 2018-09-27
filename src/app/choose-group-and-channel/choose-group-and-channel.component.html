@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="media-body">
                                     <button  (click)="changeGroupName(group)" type="button" class="btn btn-lg btn-block media-heading"
-                                        [ngClass]="{'btn-primary':choosedGroup === group.name}">{{ group.name }}</button>
+                                        [ngClass]="{'btn-primary':choosedGroup === group._id}">{{ group.name }}</button>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="media-body">
                                     <!-- <h4 class="media-heading" v-text="channel.name"></h4> -->
-                                    <a [href]="'./chatroom?group=' + choosedGroup + '&channel='+channel._id" (click)="chooseGroupAndChannel(groupId,channelId)" type="button"
+                                    <a  (click)="chooseGroupAndChannel(choosedGroup,channel._id)" type="button"
                                         class="btn btn-lg btn-block btn-success media-heading">{{ channel.name }}</a>
                                 </div>
                             </div>
