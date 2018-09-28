@@ -114,6 +114,7 @@ export class AdminComponent implements OnInit {
     //   this.groups = groups;
     // });
 
+    
     return this.dbService.getGroups().subscribe(
       groups => {
         this.groups = groups;

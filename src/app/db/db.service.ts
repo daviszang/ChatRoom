@@ -248,6 +248,14 @@ export class DbService {
     // });
   }
 
+  getGroupById(groupId):Observable<any>{
+    const url = `${apiUrl}/groups/${groupId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
+
   getChannels(groupId): Observable<any> {
     const url = `${apiUrl}/channel?groupId=${groupId}`;
     return this.http.get(url, httpOptions).pipe(

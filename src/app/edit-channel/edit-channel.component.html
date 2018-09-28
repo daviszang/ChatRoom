@@ -1,0 +1,58 @@
+<div class="container">
+  <div>
+    <h2>Channel: {{ group.name }}
+    </h2>
+  </div>
+  <div class="table-responsive">
+    <div>
+      <table class="table table-responsive table-hover">
+        <tbody attr.id={{i}} class="collapse">
+          <tr *ngFor="let channel of channels;let cindex = index">
+            <td>{{ cindex }} </td>
+            <td>{{channel.name}}</td>
+            <td>
+              <button class="btn btn-success" (click)="editChannelButton(group.name,channel.name)" data-toggle="modal"
+                data-target="#editChannelModel">Edit Channel</button>
+            </td>
+            <td><button (click)="deleteChannel(group.name,channel.name)" class="btn btn-danger">Delete Channel</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- edit channel -->
+<div class="modal fade" width="300px" id="editChannelModel" tabindex="-1" role="dialog" aria-labelledby="editChannelModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editChannelModalLabel">Edit Channel</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Add User to Channel</p>
+        <el-select [(model)]="choosedAddUser" [clearable]="true">
+          <el-option *ngFor="let user of filteredUsers" [label]="user.username" [value]="user">
+          </el-option>
+        </el-select>
+        <el-table [model]="tableData" [stripe]="true" height="200px" [border]="false" height="300px">
+          <el-table-column model-key="username" label="username" width="140">
+          </el-table-column>
+          <el-table-column label="操作" width="120">
+            <ng-template #slot let-scope="scope">
+              <el-button type="text" size="small" (click)="deleteUserFromChannel(scope)">删除</el-button>
+            </ng-template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addUserChannel()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

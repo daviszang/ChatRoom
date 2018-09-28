@@ -14,14 +14,16 @@ import { AdminComponent } from "./admin/admin.component";
 import { ChooseGroupAndChannelComponent } from "./choose-group-and-channel/choose-group-and-channel.component";
 import { TestComponent } from "./test/test.component";
 import { ChatComponentComponent } from './chat/chat-component/chat-component.component';
+import { EditChannelComponent } from './edit-channel/edit-channel.component';
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "admin", component: AdminComponent },
   { path: "chatroom", component: ChatComponentComponent},
   { path: "chooseGroupAndChannel", component: ChooseGroupAndChannelComponent },
-  { path: "chattest", component: ChatComponentComponent },
+  { path: "editchannel/:id", component: EditChannelComponent },
   { path: "**", redirectTo: "login" }
+  // path: 'book-details/:id',
 ];
 
 @NgModule({
@@ -31,7 +33,8 @@ const routes: Routes = [
     AdminComponent,
     ChooseGroupAndChannelComponent,
     TestComponent,
-    ChatComponentComponent
+    ChatComponentComponent,
+    EditChannelComponent
   ],
   imports: [
     BrowserModule,

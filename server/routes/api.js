@@ -328,13 +328,10 @@ router.post("/groups", (req, res, next) => {
     });
 });
 
-/** GET user groups by id */
+/** GET group by id */
 router.get("/groups/:groupId", (req, res, next) => {
   const id = req.params.groupId;
   Group.findById(id)
-    .select("groupName members _id admin")
-    .populate("admin", "username _id")
-    .populate("members", "username _id")
     .exec()
     .then(doc => {
       console.log("From database", doc);
