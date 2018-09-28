@@ -539,9 +539,7 @@ router.post("/channel", (req, res, next) => {
 /** GET channel by id */
 router.get("/channel/:channelId", (req, res, next) => {
   const id = req.params.channelId;
-  Group.findById(id)
-    .select("channelName members _id conversation")
-    .populate("members", "_id username")
+  Channel.findById(id)
     .exec()
     .then(doc => {
       console.log("From database", doc);
@@ -556,16 +554,15 @@ router.get("/channel/:channelId", (req, res, next) => {
       }
     })
     .catch(err => {
+      console.log("ddd")
       console.log(err);
       res.status(500).json({ error: err });
     });
 });
 
 /** Delete channel by id*/
-
-router.delete("/channel/:channelId", (req, res, next) => {
+router.get("/channel/delete/:channelId", (req, res, next) => {
   const id = req.params.channelId;
-
   Channel.findById(id, function(err, channel) {
     return channel.remove(function(err) {
       if (!err) {
@@ -576,6 +573,13 @@ router.delete("/channel/:channelId", (req, res, next) => {
             console.log(numberAffected);
           }
         );
+        Group.update(
+          {_id:id},
+          {$pull:{members:id}},
+          function(err, numberAffected) {
+            console.log(numberAffected);
+          }
+        )
         res.status(200).json({
           message: "channel deleted"
         });

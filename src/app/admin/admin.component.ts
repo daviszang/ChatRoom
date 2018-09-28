@@ -2,10 +2,7 @@ import { Component, OnInit, Inject, forwardRef } from "@angular/core";
 import { DbService } from "../db/db.service";
 import {
   FormGroup,
-  FormControl,
   FormBuilder,
-  Validators,
-  AbstractControl
 } from "@angular/forms";
 import { group } from "@angular/animations";
 
@@ -80,21 +77,21 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  deleteUserFromChannel(scope) {
-    return this.dbService
-      .deleteUserFromChannel(
-        this.editGroupName,
-        this.editChannelName,
-        scope.username
-      )
-      .then(data => {
-        this.editChannelfilter();
-        this.dbService.findUsersbyGroupAndChannel(
-          this.editGroupName,
-          this.editChannelName
-        );
-      });
-  }
+  // deleteUserFromChannel(scope) {
+  //   return this.dbService
+  //     .deleteUserFromChannel(
+  //       this.editGroupName,
+  //       this.editChannelName,
+  //       scope.username
+  //     )
+  //     .then(data => {
+  //       this.editChannelfilter();
+  //       this.dbService.findUsersbyGroupAndChannel(
+  //         this.editGroupName,
+  //         this.editChannelName
+  //       );
+  //     });
+  // }
 
   getUsers() {
     // return this.dbService.getUsers().then(users => {
@@ -114,7 +111,7 @@ export class AdminComponent implements OnInit {
     //   this.groups = groups;
     // });
 
-    
+
     return this.dbService.getGroups().subscribe(
       groups => {
         this.groups = groups;
@@ -167,12 +164,7 @@ export class AdminComponent implements OnInit {
     this.changeUserType = "";
   }
 
-  deleteChannel(groupname, channelname) {
-    return this.dbService.deleteChannel(groupname, channelname).then(() => {
-      this.getGroups();
-    });
-  }
-
+get
   createGroup() {
     let newGroup = {
       name: this.newGroupName,
@@ -223,18 +215,6 @@ export class AdminComponent implements OnInit {
       .subscribe(data => {}, err => console.log(err));
   }
 
-  addUserChannel() {
-    return this.dbService
-      .addUserChannel(
-        this.editGroupName,
-        this.editChannelName,
-        this.choosedAddUser
-      )
-      .then(data => {
-        this.getGroups();
-        this.choosedAddUser = "";
-      });
-  }
 
   changeUser() {}
 

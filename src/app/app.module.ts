@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { Routes, RouterModule } from "@angular/router";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from "@angular/common/http";
 
 import { ElModule } from "element-angular";
 
@@ -13,15 +13,17 @@ import { LoginComponent } from "./login/login.component";
 import { AdminComponent } from "./admin/admin.component";
 import { ChooseGroupAndChannelComponent } from "./choose-group-and-channel/choose-group-and-channel.component";
 import { TestComponent } from "./test/test.component";
-import { ChatComponentComponent } from './chat/chat-component/chat-component.component';
-import { EditChannelComponent } from './edit-channel/edit-channel.component';
+import { ChatComponentComponent } from "./chat/chat-component/chat-component.component";
+import { EditChannelComponent } from "./edit-channel/edit-channel.component";
+import { AddRemoveUserComponent } from "./add-remove-user/add-remove-user.component";
 
 const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "admin", component: AdminComponent },
-  { path: "chatroom", component: ChatComponentComponent},
+  { path: "chatroom", component: ChatComponentComponent },
   { path: "chooseGroupAndChannel", component: ChooseGroupAndChannelComponent },
   { path: "editchannel/:id", component: EditChannelComponent },
+  { path: "editchanneluser/:id", component: AddRemoveUserComponent },
   { path: "**", redirectTo: "login" }
   // path: 'book-details/:id',
 ];
@@ -34,7 +36,8 @@ const routes: Routes = [
     ChooseGroupAndChannelComponent,
     TestComponent,
     ChatComponentComponent,
-    EditChannelComponent
+    EditChannelComponent,
+    AddRemoveUserComponent
   ],
   imports: [
     BrowserModule,

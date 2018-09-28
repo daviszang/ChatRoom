@@ -217,23 +217,23 @@ export class DbService {
     );
   }
 
-  getUser(username, password) {
-    return new Promise(resolve => {
-      const index = this.users.findIndex(
-        user => user.username === username && user.password === password
-      );
-      let ret = index != -1;
-      let data = {};
-      if (index != -1) {
-        data["user"] = this.users[index];
-        data["contain"] = true;
-      } else {
-        data["user"] = {};
-        data["contain"] = false;
-      }
-      resolve(data);
-    });
-  }
+  // getUser(username, password) {
+  //   return new Promise(resolve => {
+  //     const index = this.users.findIndex(
+  //       user => user.username === username && user.password === password
+  //     );
+  //     let ret = index != -1;
+  //     let data = {};
+  //     if (index != -1) {
+  //       data["user"] = this.users[index];
+  //       data["contain"] = true;
+  //     } else {
+  //       data["user"] = {};
+  //       data["contain"] = false;
+  //     }
+  //     resolve(data);
+  //   });
+  // }
 
   getGroups(): Observable<any> {
     const url = `${apiUrl}/group`;
@@ -248,8 +248,24 @@ export class DbService {
     // });
   }
 
-  getGroupById(groupId):Observable<any>{
+  getGroupById(groupId): Observable<any> {
     const url = `${apiUrl}/groups/${groupId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
+
+  getChannel(channelId): Observable<any> {
+    const url = `${apiUrl}/channel/${channelId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+  }
+
+  getUser(userId): Observable<any> {
+    const url = `${apiUrl}/user/${userId}`;
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError)
@@ -364,54 +380,74 @@ export class DbService {
     });
   }
 
-  deleteUserFromChannel(groupname, channelname, username) {
-    return new Promise(resolve => {
-      let data = [];
-      const gindex = this.groups.findIndex(group => group.name === groupname);
-      if (gindex != -1) {
-        const cindex = this.groups[gindex].channels.findIndex(
-          channel => channel.name === channelname
-        );
-        if (cindex != -1) {
-          const uindex = this.groups[gindex].channels[cindex].users.findIndex(
-            user => user.username === username
-          );
-          this.groups[gindex].channels[cindex].users.splice(uindex, 1);
-        }
-      }
-      resolve(true);
-    });
+  deleteUserFromChannel(channelId, userId) {
+    // return new Promise(resolve => {
+    //   let data = [];
+    //   const gindex = this.groups.findIndex(group => group.name === groupname);
+    //   if (gindex != -1) {
+    //     const cindex = this.groups[gindex].channels.findIndex(
+    //       channel => channel.name === channelname
+    //     );
+    //     if (cindex != -1) {
+    //       const uindex = this.groups[gindex].channels[cindex].users.findIndex(
+    //         user => user.username === username
+    //       );
+    //       this.groups[gindex].channels[cindex].users.splice(uindex, 1);
+    //     }
+    //   }
+    //   resolve(true);
+    // });
+    const url = `${apiUrl}/channel/delete`;
+    let data = {
+      userId: userId,
+      channelId: channelId
+    };
+    console.log(data);
+    return this.http.post(url, data, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
   }
 
-  addUserChannel(groupname, channelname, user) {
-    return new Promise(resolve => {
-      let data = [];
-      const gindex = this.groups.findIndex(group => group.name === groupname);
-      if (gindex != -1) {
-        const cindex = this.groups[gindex].channels.findIndex(
-          channel => channel.name === channelname
-        );
-        if (cindex != -1) {
-          this.groups[gindex].channels[cindex].users.push(user);
-        }
-      }
-      resolve(this.groups);
-    });
+  addUserChannel(channelId, userId) {
+    const url = `${apiUrl}/channel/add`;
+    let data = {
+      channelId: channelId,
+      userId: userId
+    };
+    return this.http.post(url, data, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
+
+    // return new Promise(resolve => {
+    //   let data = [];
+    //   const gindex = this.groups.findIndex(group => group.name === groupname);
+    //   if (gindex != -1) {
+    //     const cindex = this.groups[gindex].channels.findIndex(
+    //       channel => channel.name === channelname
+    //     );
+    //     if (cindex != -1) {
+    //       this.groups[gindex].channels[cindex].users.push(user);
+    //     }
+    //   }
+    //   resolve(this.groups);
+    // });
   }
 
-  addGroupByName(groupname) {
-    return new Promise(resolve => {
-      const index = this.groups.findIndex(group => group.name === groupname);
-      let newGroup = {
-        name: groupname,
-        channels: []
-      };
-      if (index == -1) {
-        this.groups.push(newGroup);
-      }
-      resolve(this.groups);
-    });
-  }
+  // addGroupByName(groupname) {
+  //   return new Promise(resolve => {
+  //     const index = this.groups.findIndex(group => group.name === groupname);
+  //     let newGroup = {
+  //       name: groupname,
+  //       channels: []
+  //     };
+  //     if (index == -1) {
+  //       this.groups.push(newGroup);
+  //     }
+  //     resolve(this.groups);
+  //   });
+  // }
 
   deleteUser(userId): Observable<any> {
     const url = `${apiUrl}/user/delete/${userId}`;
@@ -443,19 +479,12 @@ export class DbService {
     // });
   }
 
-  deleteChannel(groupname, channelname) {
-    return new Promise(resolve => {
-      const index = this.groups.findIndex(group => group.name === groupname);
-      if (index != -1) {
-        const channelIndex = this.groups[index].channels.findIndex(
-          channel => channel.name === channelname
-        );
-        if (channelIndex != -1) {
-          this.groups[index].channels.splice(channelIndex, 1);
-        }
-      }
-      resolve(true);
-    });
+  deleteChannel(channelId): Observable<any> {
+    const url = `${apiUrl}/channel/delete/${channelId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError)
+    );
   }
 
   updateUser(newuser) {
