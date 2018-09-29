@@ -69,7 +69,7 @@ router.get("/user/:userId", (req, res, next) => {
 
 /** delete user */
 router.get("/user/delete/:userId", (req, res, next) => {
-  console.log("delete user")
+  console.log("delete user");
   User.findById(req.params.userId, function(err, user) {
     return user.remove(function(err) {
       if (!err) {
@@ -217,12 +217,12 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
-router.get("/logout",(req,res,next)=>{
+router.get("/logout", (req, res, next) => {
   delete req.session.authenticated;
   delete req.session.username;
   delete req.session.userId;
   delete req.session.type;
-}) 
+});
 
 /** User login */
 router.post("/login", (req, res, next) => {
@@ -252,7 +252,7 @@ router.post("/login", (req, res, next) => {
             userInfo: {
               userId: user[0]._id,
               username: user[0].username,
-              type:user[0].type,
+              type: user[0].type,
               // superAdmin: user[0].superAdmin,
               channels: user[0].channels,
               groups: user[0].groups
@@ -286,7 +286,7 @@ router.post("/groups", (req, res, next) => {
           // _id: new mongoose.Types.ObjectId(),
           name: req.body.name,
           admin: req.body.userId,
-          members: [req.body.userId]
+          members: []
         });
         console.log(group);
         group
@@ -305,7 +305,7 @@ router.post("/groups", (req, res, next) => {
 
             User.update(
               { _id: req.body.userId },
-              { $push: { groups: { _id: result._id } } }
+              { $push: { groups: result._id } }
             )
               .exec()
               .then(result => {
@@ -408,7 +408,7 @@ router.get("/groups/delete/:groupId", (req, res, next) => {
       if (!err) {
         User.update(
           { _id: { $in: group.members } },
-          { $pull: { groups: group._id } },
+          { $pull:  group._id },
           function(err, numberAffected) {
             console.log(numberAffected);
           }
@@ -433,7 +433,7 @@ router.get("/groups/delete/:groupId", (req, res, next) => {
 router.post("/channel/add", (req, res, next) => {
   const channelId = req.body.channelId;
   const userId = req.body.userId;
-  Channel.update({ _id: channelId }, { $push: { members: { _id: userId } } })
+  Channel.updateOne({ _id: channelId }, { $push: { members: { _id: userId } } })
     .exec()
     .then(result => {
       res.status(200).json({
@@ -463,10 +463,12 @@ router.post("/channel/add", (req, res, next) => {
 router.post("/channel/delete", (req, res, next) => {
   const channelId = req.body.channelId;
   const userId = req.body.userId;
-
-  Channel.updateOne({ _id: channelId }, { $pull: { members: { _id: userId } } })
+  console.log(channelId);
+  console.log(userId);
+  Channel.update({ _id: channelId }, { $pull: { members: userId } })
     .exec()
     .then(result => {
+      console.log(result);
       console.log("channel updated");
     })
     .catch(err => {
@@ -475,9 +477,10 @@ router.post("/channel/delete", (req, res, next) => {
         error: err
       });
     });
-  User.updateOne({ _id: userId }, { $pull: { channels: { _id: channelId } } })
+  User.updateOne({ _id: userId }, { $pull: { channels:channelId } })
     .exec()
     .then(result => {
+      console.log(result);
       res.status(200).json({
         message: "User has been removed from channel"
       });
@@ -511,6 +514,9 @@ router.post("/channel", (req, res, next) => {
           _id: result._id
         }
       });
+      Group.update(
+        {_id:req.body.group},{$push:{members:result._id}}
+      ).exec().then(result => console.log(result));
       User.update(
         { _id: req.body.userId },
         { $push: { channels: { _id: result._id } } }
@@ -525,8 +531,6 @@ router.post("/channel", (req, res, next) => {
             error: err
           });
         });
-        
-      
     })
     .catch(err => {
       console.log(err);
@@ -554,7 +558,7 @@ router.get("/channel/:channelId", (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log("ddd")
+      console.log("ddd");
       console.log(err);
       res.status(500).json({ error: err });
     });
@@ -568,18 +572,17 @@ router.get("/channel/delete/:channelId", (req, res, next) => {
       if (!err) {
         User.update(
           { _id: { $in: channel.members } },
-          { $pull: { channels: channel._id } },
+          { $pull: channel._id  },
           function(err, numberAffected) {
             console.log(numberAffected);
           }
         );
-        Group.update(
-          {_id:id},
-          {$pull:{members:id}},
-          function(err, numberAffected) {
-            console.log(numberAffected);
-          }
-        )
+        Group.update({ _id: id }, { $pull: id }, function(
+          err,
+          numberAffected
+        ) {
+          console.log(numberAffected);
+        });
         res.status(200).json({
           message: "channel deleted"
         });

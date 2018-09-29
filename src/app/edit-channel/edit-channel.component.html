@@ -9,6 +9,7 @@
         <tr class="clickable" aria-expanded="false">
           <td>{{ i + 1 }}</td>
           <td>{{ channel.name }}</td>
+          <td>Total Users: {{ channel.members.length }}</td>
           <td><a class="btn btn-success" [href]="'editchanneluser/' + channel._id" data-toggle="modal" data-toggle="modal">Edit
               Channel</a></td>
           <td><button (click)="deleteChannel(channel._id)" class="btn btn-danger">Delete Channel</button></td>

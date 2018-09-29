@@ -12,15 +12,31 @@ export class AddRemoveUserComponent implements OnInit {
   public channel;
   public channelId;
 
+  inChannel(userId){
+    // console.log(this.channel);
+    for(let i = 0;i<this.channel.members.length;i++){
+      if(userId == this.channel.members[i]){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  notinChannel(userId){
+    return !this.inChannel(userId);
+  }
+
   addUserToChannel(channelId, userId) {
     this.dbService.addUserChannel(channelId, userId).subscribe(data => {
       this.getUsers();
+      this.getChannel(channelId);
     });
   }
 
   deleteUserFromChannel(channelId, userId) {
     this.dbService.deleteUserFromChannel(channelId, userId).subscribe(data => {
       this.getUsers();
+      this.getChannel(channelId);
     });
   }
 

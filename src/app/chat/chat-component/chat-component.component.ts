@@ -32,6 +32,16 @@ export class ChatComponentComponent implements OnInit {
     this.initIoConnection(channelPath);
   }
 
+  getSortedMessage(){
+    return this.messages.sort(
+      (m1:ChatMessage,m2:ChatMessage)=>{
+        let t1 = new Date(m1.time);
+        let t2 = new Date(m2.time);
+        return t1.getTime() - t2.getTime();
+      }
+    )
+  }
+
   private initIoConnection(channelPath): void {
     this.socketService.initSocket(channelPath);
     this.ioConnection = this.socketService

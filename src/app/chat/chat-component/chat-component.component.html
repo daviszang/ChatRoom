@@ -8,7 +8,7 @@
         <div class="panel-body">
           <div style="height:400px; overflow-x:hidden; overflow-y:scroll;">
             <div id="message-list">
-              <div style="margin-bottom:25px;" *ngFor="let message of messages">
+              <div style="margin-bottom:25px;" *ngFor="let message of getSortedMessage()">
                 <div *ngIf="message.type === action.JOINED || message.type === action.LEFT">
                   <div class="media-left">
                     <img class="media-object" style="width:20px; height:20px;" src="../../../assets/images/1.png">

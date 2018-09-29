@@ -1,9 +1,6 @@
 import { Component, OnInit, Inject, forwardRef } from "@angular/core";
 import { DbService } from "../db/db.service";
-import {
-  FormGroup,
-  FormBuilder,
-} from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { group } from "@angular/animations";
 
 type validateResult = {
@@ -111,7 +108,6 @@ export class AdminComponent implements OnInit {
     //   this.groups = groups;
     // });
 
-
     return this.dbService.getGroups().subscribe(
       groups => {
         this.groups = groups;
@@ -121,17 +117,13 @@ export class AdminComponent implements OnInit {
   }
 
   deleteUser(userId) {
-
     // return this.dbService.deleteUser(user).then(() => {
     //   return this.getUsers();
     // });
 
-    return this.dbService.deleteUser(userId).subscribe(
-      data => this.getUsers(),
-      err => console.log(err)
-    )
-
-
+    return this.dbService
+      .deleteUser(userId)
+      .subscribe(data => this.getUsers(), err => console.log(err));
   }
 
   createUser() {
@@ -160,12 +152,12 @@ export class AdminComponent implements OnInit {
     this.dbService
       .changeUserType(this.edittingUser.username, this.changeUserType)
       .subscribe(data => this.getUsers(), err => console.log(err));
+    this.getUsers();
     this.edittingUser = {};
     this.changeUserType = "";
   }
 
-get
-  createGroup() {
+  get createGroup() {
     let newGroup = {
       name: this.newGroupName,
       members: [],
@@ -187,11 +179,9 @@ get
     //   return this.getGroups();
     // });
 
-    return this.dbService.deleteGroup(groupId).subscribe(
-      data => this.getGroups(),
-      err => console.log(err)
-    )
-
+    return this.dbService
+      .deleteGroup(groupId)
+      .subscribe(data => this.getGroups(), err => console.log(err));
   }
 
   addChannelButton(groupId) {
@@ -214,7 +204,6 @@ get
       .getChannels(groupId)
       .subscribe(data => {}, err => console.log(err));
   }
-
 
   changeUser() {}
 
